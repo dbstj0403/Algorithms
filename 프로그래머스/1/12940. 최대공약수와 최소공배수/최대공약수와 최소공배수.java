@@ -1,36 +1,28 @@
 class Solution {
     public int[] solution(int n, int m) {
         int[] answer = new int[2];
-        // 두 수의 최대공약수와 최소공배수 반환
+
         // 최대공약수 구하기
-        int max = 0;
-        if(n > m){
-            max = n;
-        }
-        else{
-            max = m;
-        }
-        int k = 0;
-        for(int i=1; i<max; i++){
-            if(n % i == 0 && m % i == 0){
-                if(i > k){
-                    k = i;
-                }
+        int max = Math.max(n, m);
+        int gcd = 0;
+        for (int i = 1; i <= max; i++) {
+            if (n % i == 0 && m % i == 0) {
+                k = i;
             }
         }
-        answer[0] = k;
-        
+        answer[0] = gcd;
+
         // 최소공배수 구하기
-        int y = n * m;
-        int min = n * m;
-        for(int i=1; i<y; i++){
-            if(i % n == 0 && i % m == 0){
-                if(i < min){
-                    min = i;
-                }
+        int mul = n * m;
+        int lcm = mul;
+        for (int i = 1; i <= mul; i++) {
+            if (i % n == 0 && i % m == 0) {
+                lcm = i;
+                break;
             }
         }
-        answer[1] = min;
+        answer[1] = lcm;
+
         return answer;
     }
 }
