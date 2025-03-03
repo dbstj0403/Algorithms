@@ -7,7 +7,7 @@ class Solution {
         int gcd = 0;
         for (int i = 1; i <= max; i++) {
             if (n % i == 0 && m % i == 0) {
-                k = i;
+                gcd = i;
             }
         }
         answer[0] = gcd;
