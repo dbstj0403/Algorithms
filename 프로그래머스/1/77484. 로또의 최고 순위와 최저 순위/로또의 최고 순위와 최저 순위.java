@@ -22,29 +22,20 @@ class Solution {
             winSet.add(n);
         }
         
-        List<Integer> isExist_list = new ArrayList<>();
         int count = 0;
         int zeroCount = 0;
         
         for(int i = 0; i < lottos.length; i++){
             if(winSet.contains(lottos[i])){
-                isExist_list.add(lottos[i]);
                 count++;
             }
             else if(lottos[i] == 0){
                 zeroCount++;
             }
         }
-        int n = win_nums.length - isExist_list.size();
         
         answer[1] = map.get(count);
-        if(n >= zeroCount){
-            count += zeroCount;
-        }
-        else{
-            count += n;
-        }
-        answer[0] = map.get(count);
+        answer[0] = map.get(count + zeroCount);
         
         return answer;
     }
