@@ -9,7 +9,6 @@ class Solution {
         for(int i = len - 1; i >= 0; i--){
             char c = my_string.charAt(i);
             sb.insert(0, c);
-            System.out.println(sb);
             list.add(sb.toString());
         }
         
