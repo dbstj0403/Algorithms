@@ -3,41 +3,31 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        // 입력 처리
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+
+        int[] dist = new int[N - 1]; // 거리
+        int[] cost = new int[N];     // 기름값
+
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        int N = Integer.parseInt(st.nextToken()); // 도시의 개수
-        int total = 0;
-        boolean flag = true;
-
-        List<Integer> distList = new ArrayList<>();
-        List<Integer> costList = new ArrayList<>();
-
-        st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < N - 1; i++){
-            distList.add(Integer.parseInt(st.nextToken()));
+        for(int i = 0; i < N - 1; i++) {
+            dist[i] = Integer.parseInt(st.nextToken());
         }
 
         st = new StringTokenizer(br.readLine());
-        for(int i = 0; i < N - 1; i++){
-            costList.add(Integer.parseInt(st.nextToken()));
+        for(int i = 0; i < N; i++) {
+            cost[i] = Integer.parseInt(st.nextToken());
         }
 
-        // 싼 곳에서 제일 많이 넣고, 이외의 도시에서는 다음 도시로 갈 만큼만 넣기
-        int minCost = Collections.min(costList);
+        long total = 0;
+        int minCost = cost[0];
 
-        for(int i = 0; i < distList.size(); i++){
-            if(costList.get(i) != minCost && flag){
-                total += costList.get(i) * distList.get(i);
+        for(int i = 0; i < N - 1; i++) {
+            if(cost[i] < minCost) {
+                minCost = cost[i];
             }
-            else if(costList.get(i) == minCost && flag){
-                int remain = 0;
-                for(int j = i; j < distList.size(); j++){
-                    remain += distList.get(j);
-                }
-                total += remain * minCost;
-                flag = false;
-            }
+            total += (long) minCost * dist[i];
         }
 
         System.out.println(total);
