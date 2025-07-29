@@ -6,6 +6,7 @@ public class Main {
     static int minVal = Integer.MAX_VALUE;
     static int[][] arr;
     static int[] picked;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -14,9 +15,9 @@ public class Main {
         arr = new int[N][N];
         picked = new int[N / 2];
 
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < N; j++) {
+            for (int j = 0; j < N; j++) {
                 arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
@@ -25,52 +26,37 @@ public class Main {
         System.out.println(minVal);
     }
 
-    static void backtrack(int start, int depth){
-        if(depth == N / 2){
-            // 두 팀의 점수차 계산
-            List<Integer> startTeam = new ArrayList<>();
-            List<Integer> linkTeam = new ArrayList<>();
-
-            // 팀 분리
-            for(int i = 0; i < picked.length; i++){
-                startTeam.add(picked[i]);
-            }
-            for(int i = 0; i < N; i++){
-                if(!startTeam.contains(i)){
-                    linkTeam.add(i);
-                }
-            }
-
-            minVal = Math.min(minVal, calculate(startTeam, linkTeam));
+    static void backtrack(int start, int depth) {
+        if (depth == N / 2) {
+            calculate();
             return;
         }
 
-        for(int i = start; i < N; i++){
+        for (int i = start; i < N; i++) {
             picked[depth] = i;
-            backtrack(i + 1, depth+ 1);
+            backtrack(i + 1, depth + 1);
         }
     }
 
-    static int calculate(List<Integer> startTeam, List<Integer> linkTeam){
-        int startTeamScore = 0;
-        int linkTeamScore = 0;
+    static void calculate() {
+        boolean[] isPicked = new boolean[N];
+        for (int i : picked) {
+            isPicked[i] = true;
+        }
 
-        for(int i = 0; i < startTeam.size(); i++){
-            for(int j = i + 1; j < startTeam.size(); j++){
-                int a = startTeam.get(i);
-                int b = startTeam.get(j);
-                startTeamScore += arr[a][b] + arr[b][a];
+        int startSum = 0;
+        int linkSum = 0;
+
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = i + 1; j < N; j++) {
+                if (isPicked[i] && isPicked[j]) {
+                    startSum += arr[i][j] + arr[j][i];
+                } else if (!isPicked[i] && !isPicked[j]) {
+                    linkSum += arr[i][j] + arr[j][i];
+                }
             }
         }
 
-        for(int i = 0; i < linkTeam.size(); i++){
-            for(int j = i + 1; j < linkTeam.size(); j++){
-                int a = linkTeam.get(i);
-                int b = linkTeam.get(j);
-                linkTeamScore += arr[a][b] + arr[b][a];
-            }
-        }
-
-        return Math.abs(startTeamScore - linkTeamScore);
+        minVal = Math.min(minVal, Math.abs(startSum - linkSum));
     }
 }
